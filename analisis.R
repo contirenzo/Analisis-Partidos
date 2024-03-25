@@ -98,6 +98,33 @@ ggplot(df_zonas_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
         axis.ticks = element_blank())+
   scale_fill_brewer(name = "",palette = "Set1", direction = 1)
 
+#Tackles
+df_tackles <- filter(df, Categoría == "Tackle")
+
+ggplot(df_tackles, aes(x="", y=Categoría, fill=Zona)) +
+  geom_bar(stat="identity") +
+  coord_polar("y", start=0) +
+  labs(title= "Tackles por zona", x = NULL, y = NULL) + # Quitar los títulos
+  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
+        axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),    # Quitar los números de los ejes
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  scale_fill_brewer(name = "",palette = "Set1", direction = -1)
+
+ggplot(data=df_tackles)+
+  annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
+  scale_x_continuous(limits = c(-3, 73)) +
+  scale_y_continuous(limits = c(-1, 101))+
+  coord_fixed(ratio = 1.18)+
+  geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría))+
+  labs(title= "Tackles propios", x = NULL, y = NULL) + # Quitar los títulos
+  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
+        axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),    # Quitar los números de los ejes
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
 
 #Lines
 df_lines <- filter(df, Categoría == "Lineout propio" | Categoría == "Lineout rival")
@@ -122,4 +149,24 @@ ggplot(data=df_lines)+
         axis.ticks = element_blank())+
   scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
 
-#ds_scrum <- filter(ds, Categoría == "Scrum Propio" | Categoría == "Scrum Rival")
+#Scrum
+df_scrum <- filter(df, Categoría == "Scrum propio" | Categoría == "Scrum rival")
+
+ggplot(data=df_scrum)+
+  geom_bar(mapping = aes(x = Categoría, fill= GanPer))+
+  labs(title= "Scrums", x = NULL, y = NULL) + # Quitar los títulos
+  scale_fill_brewer(name = "", palette = "Set1", direction = -1)
+
+ggplot(data=df_scrum)+
+  annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
+  scale_x_continuous(limits = c(-3, 73)) +
+  scale_y_continuous(limits = c(-1, 101))+
+  coord_fixed(ratio = 1.18)+
+  geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría))+
+  labs(title= "Scrums", x = NULL, y = NULL) + # Quitar los títulos
+  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
+        axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),    # Quitar los números de los ejes
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
