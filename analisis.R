@@ -63,7 +63,7 @@ df_pos_sum <- df_pos %>% group_by(Categoría) %>% summarise(sum(Duracion_seg))
 df_pos_sum$Duracion_min <- df_pos_sum$`sum(Duracion_seg)` %/% 60
 df_pos_sum$Duracion_seg <- df_pos_sum$`sum(Duracion_seg)` %% 60
 df_pos_sum <- unite(df_pos_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
-df_pos_sum$Duracion <- ifelse(nchar(df_pos_sum$Duracion) < 5, paste(substr(df_pos_sum$Duracion, 1, 3), "0", substr(df_pos_sum$Duracion, 4, nchar(df_pos_sum$Duracion)), sep = ""),df_pos_sum$Duracion)
+#df_pos_sum$Duracion <- ifelse(nchar(df_pos_sum$Duracion) < 5, paste(substr(df_pos_sum$Duracion, 1, 3), "0", substr(df_pos_sum$Duracion, 4, nchar(df_pos_sum$Duracion)), sep = ""),df_pos_sum$Duracion)
 
 ggplot(df_pos_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
   geom_bar(stat="identity") +
@@ -72,10 +72,32 @@ ggplot(df_pos_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
   theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
         axis.title.y = element_blank(), 
         axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank())+
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
   scale_fill_brewer(name = "",palette = "Set1", direction = -1)
 # annotate(geom = "text", x = 1, y = 650, label = "A")+
 # annotate(geom = "text", x = 1, y = 2050, label = "B")
+
+#Zonas
+df_zonas <- filter(df, Categoría == "Cárcel" | Categoría == "Transición" | Categoría == "Gestación" | Categoría == "Definición")
+df_zonas_sum <- df_zonas %>% group_by(Categoría) %>% summarise(sum(Duracion_seg))
+
+df_zonas_sum$Duracion_min <- df_zonas_sum$`sum(Duracion_seg)` %/% 60
+df_zonas_sum$Duracion_seg <- df_zonas_sum$`sum(Duracion_seg)` %% 60
+df_zonas_sum <- unite(df_zonas_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
+#df_zonas_sum$Duracion <- ifelse(nchar(df_zonas_sum$Duracion) < 5, paste(substr(df_zonas_sum$Duracion, 1, 3), "0", substr(df_zonas_sum$Duracion, 4, nchar(df_zonas_sum$Duracion)), sep = ""),df_zonas_sum$Duracion)
+
+ggplot(df_zonas_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
+  geom_bar(stat="identity") +
+  coord_polar("y", start=0) +
+  labs(title= "Zonas de juego", x = NULL, y = NULL) + # Quitar los títulos
+  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
+        axis.title.y = element_blank(), 
+        axis.text.x = element_blank(),    # Quitar los números de los ejes
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  scale_fill_brewer(name = "",palette = "Set1", direction = 1)
+
 
 #Lines
 df_lines <- filter(df, Categoría == "Lineout propio" | Categoría == "Lineout rival")
@@ -96,8 +118,8 @@ ggplot(data=df_lines)+
   theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
         axis.title.y = element_blank(), 
         axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank())+
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
   scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
 
 #ds_scrum <- filter(ds, Categoría == "Scrum Propio" | Categoría == "Scrum Rival")
-
