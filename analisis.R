@@ -78,6 +78,7 @@ cancha_y_coord <- list(annotation_custom(background, xmin = -6, xmax = 76, ymin 
 df_pos <- filter(df, Categoría == "Posesión propia" | Categoría == "Posesión rival")
 df_pos_sum <- df_pos %>% group_by(Categoría) %>% summarise(sum(Duracion_seg))
 
+df_pos_sum$percent <- df_pos_sum$`sum(Duracion_seg)`/sum(df_pos_sum$`sum(Duracion_seg)`)*100
 df_pos_sum$Duracion_min <- df_pos_sum$`sum(Duracion_seg)` %/% 60
 df_pos_sum$Duracion_seg <- df_pos_sum$`sum(Duracion_seg)` %% 60
 df_pos_sum <- unite(df_pos_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
@@ -88,7 +89,9 @@ ggplot(df_pos_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
     coord_polar("y", start=0) +
       labs(title= "Posesión", x = NULL, y = NULL) +
         clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = -1)
+          scale_fill_brewer(name = "",palette = "Set1", direction = -1)+
+            geom_text(aes(label = paste0(round(percent), "%")), position = position_stack(vjust = 0.5), color = "white")
+
 # annotate(geom = "text", x = 1, y = 650, label = "A")+
 # annotate(geom = "text", x = 1, y = 2050, label = "B")
 
@@ -96,6 +99,7 @@ ggplot(df_pos_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
 df_zonas <- filter(df, Categoría == "Cárcel" | Categoría == "Transición" | Categoría == "Gestación" | Categoría == "Definición")
 df_zonas_sum <- df_zonas %>% group_by(Categoría) %>% summarise(sum(Duracion_seg))
 
+df_zonas_sum$percent <- df_zonas_sum$`sum(Duracion_seg)`/sum(df_zonas_sum$`sum(Duracion_seg)`)*100
 df_zonas_sum$Duracion_min <- df_zonas_sum$`sum(Duracion_seg)` %/% 60
 df_zonas_sum$Duracion_seg <- df_zonas_sum$`sum(Duracion_seg)` %% 60
 df_zonas_sum <- unite(df_zonas_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
@@ -106,7 +110,9 @@ ggplot(df_zonas_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
     coord_polar("y", start=0) +
       labs(title= "Zonas de juego", x = NULL, y = NULL) + 
         clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = 1)
+          scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
+            geom_text(aes(label = paste0(round(percent), "%")), position = position_stack(vjust = 0.5), color = "white")
+
 
 #Penales
 df_penales <- filter(df, Categoría == "Penalti concedido propio" | Categoría == "Penalti concedido rival")
@@ -138,7 +144,7 @@ ggplot(data=df_tackles)+
   cancha_y_coord+
     labs(title= "Tackles", x = NULL, y = NULL)
 
-#Lines
+#Lineouts
 df_lines <- filter(df, Categoría == "Lineout propio" | Categoría == "Lineout rival")
 df_lines$x <- ifelse(df_lines$x < 50, 0, 70)
 
@@ -154,7 +160,7 @@ ggplot(data=df_lines)+
       labs(title= "Lineouts", x = NULL, y = NULL) 
        
 
-#Scrum
+#Scrums
 df_scrum <- filter(df, Categoría == "Scrum propio" | Categoría == "Scrum rival")
 
 ggplot(data=df_scrum)+
