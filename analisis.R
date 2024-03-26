@@ -7,7 +7,7 @@ library(janitor)
 library(grid)
 
 #Importar datos
-df <- read.csv("sem-cvs.csv", sep=";")
+df <- read.csv("data_sem-cvs.csv", sep=";")
 
 # Limpieza ###########################
 df <- df %>% remove_empty(c("rows", "cols"))
