@@ -53,8 +53,23 @@ df$Duracion_seg <- as.numeric(df$Duracion_seg)
 
 # Graficas ############################
 
+# Eliminar titulos y ticks de graficas
+clean_graph <- theme(axis.title.x = element_blank(),   
+              axis.title.y = element_blank(), 
+              axis.text.x = element_blank(),    
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank())
+
 # Fondo cancha para coordenadas
 background <- rasterGrob(png::readPNG("cancha.png"), interpolate = TRUE)
+cancha_y_coord <- list(annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120),
+                scale_x_continuous(limits = c(-3, 73)) ,
+                scale_y_continuous(limits = c(-1, 101)),
+                coord_fixed(ratio = 1.18),
+                  annotate(geom = "text", x = 8, y = 9, label = "A"),
+                    geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría)),
+                        scale_color_brewer(name = "", palette = "Set2", direction = 1),
+                          clean_graph)
 
 # Posesión
 df_pos <- filter(df, Categoría == "Posesión propia" | Categoría == "Posesión rival")
@@ -67,14 +82,10 @@ df_pos_sum <- unite(df_pos_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
 
 ggplot(df_pos_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
   geom_bar(stat="identity") +
-  coord_polar("y", start=0) +
-  labs(title= "Posesión", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_fill_brewer(name = "",palette = "Set1", direction = -1)
+    coord_polar("y", start=0) +
+      labs(title= "Posesión", x = NULL, y = NULL) +
+        clean_graph+
+          scale_fill_brewer(name = "",palette = "Set1", direction = -1)
 # annotate(geom = "text", x = 1, y = 650, label = "A")+
 # annotate(geom = "text", x = 1, y = 2050, label = "B")
 
@@ -89,42 +100,40 @@ df_zonas_sum <- unite(df_zonas_sum, Duracion, Duracion_min, Duracion_seg,sep=":"
 
 ggplot(df_zonas_sum, aes(x="", y=`sum(Duracion_seg)`, fill=Categoría)) +
   geom_bar(stat="identity") +
-  coord_polar("y", start=0) +
-  labs(title= "Zonas de juego", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_fill_brewer(name = "",palette = "Set1", direction = 1)
+    coord_polar("y", start=0) +
+      labs(title= "Zonas de juego", x = NULL, y = NULL) + 
+        clean_graph+
+          scale_fill_brewer(name = "",palette = "Set1", direction = 1)
+
+#Penales
+df_penales <- filter(df, Categoría == "Penalti concedido propio" | Categoría == "Penalti concedido rival")
+df_penales_conc_riv <- filter(df, Categoría == "Penalti concedido rival")
+
+
+ggplot(df_penales_conc_riv, aes(x="", y=Categoría, fill=Zona)) +
+  geom_bar(stat="identity") +
+    coord_polar("y", start=0) +
+      labs(title= "Penales al rival por zona", x = NULL, y = NULL) + 
+        clean_graph+
+          scale_fill_brewer(name = "",palette = "Set1", direction = 1)
+
+ggplot(data=df_penales)+
+  cancha_y_coord+
+    labs(title= "Penales", x = NULL, y = NULL)
 
 #Tackles
 df_tackles <- filter(df, Categoría == "Tackle")
 
 ggplot(df_tackles, aes(x="", y=Categoría, fill=Zona)) +
   geom_bar(stat="identity") +
-  coord_polar("y", start=0) +
-  labs(title= "Tackles por zona", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_fill_brewer(name = "",palette = "Set1", direction = -1)
+    coord_polar("y", start=0) +
+      labs(title= "Tackles por zona", x = NULL, y = NULL) +
+        clean_graph+
+          scale_fill_brewer(name = "",palette = "Set1", direction = 1)
 
 ggplot(data=df_tackles)+
-  annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
-  scale_x_continuous(limits = c(-3, 73)) +
-  scale_y_continuous(limits = c(-1, 101))+
-  coord_fixed(ratio = 1.18)+
-  geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría))+
-  labs(title= "Tackles propios", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
+  cancha_y_coord+
+    labs(title= "Tackles", x = NULL, y = NULL)
 
 #Lines
 df_lines <- filter(df, Categoría == "Lineout propio" | Categoría == "Lineout rival")
@@ -132,41 +141,23 @@ df_lines$x <- ifelse(df_lines$x < 50, 0, 70)
 
 ggplot(data=df_lines)+
   geom_bar(mapping = aes(x = Categoría, fill= GanPer))+
-  labs(title= "Lineouts", x = NULL, y = NULL) + # Quitar los títulos
-  scale_fill_brewer(name = "", palette = "Set1", direction = -1)
+    labs(title= "Lineouts", x = NULL, y = NULL) + 
+      scale_fill_brewer(name = "", palette = "Set1", direction = -1)
 
 ggplot(data=df_lines)+
   annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
-  scale_x_continuous(limits = c(-3, 73)) +
-  scale_y_continuous(limits = c(-1, 101))+
-  coord_fixed(ratio = 1.18)+
-  geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría))+
-  labs(title= "Lineouts", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
+    cancha_y_coord+
+      labs(title= "Lineouts", x = NULL, y = NULL) 
+       
 
 #Scrum
 df_scrum <- filter(df, Categoría == "Scrum propio" | Categoría == "Scrum rival")
 
 ggplot(data=df_scrum)+
   geom_bar(mapping = aes(x = Categoría, fill= GanPer))+
-  labs(title= "Scrums", x = NULL, y = NULL) + # Quitar los títulos
-  scale_fill_brewer(name = "", palette = "Set1", direction = -1)
+    labs(title= "Scrums", x = NULL, y = NULL) +
+      scale_fill_brewer(name = "", palette = "Set1", direction = -1)
 
 ggplot(data=df_scrum)+
-  annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
-  scale_x_continuous(limits = c(-3, 73)) +
-  scale_y_continuous(limits = c(-1, 101))+
-  coord_fixed(ratio = 1.18)+
-  geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría))+
-  labs(title= "Scrums", x = NULL, y = NULL) + # Quitar los títulos
-  theme(axis.title.x = element_blank(),   # Quitar los títulos de los ejes
-        axis.title.y = element_blank(), 
-        axis.text.x = element_blank(),    # Quitar los números de los ejes
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  scale_color_brewer(name = "",type = "qual", palette = "Set2", direction = 1)
+  cancha_y_coord+
+    labs(title= "Scrums", x = NULL, y = NULL)
