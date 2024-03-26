@@ -66,7 +66,10 @@ cancha_y_coord <- list(annotation_custom(background, xmin = -6, xmax = 76, ymin 
                 scale_x_continuous(limits = c(-3, 73)) ,
                 scale_y_continuous(limits = c(-1, 101)),
                 coord_fixed(ratio = 1.18),
-                  annotate(geom = "text", x = 8, y = 9, label = "A"),
+                  annotate(geom = "text", x = 35, y = 18, label = "Cárcel", color= "white", alpha = 0.5),
+                  annotate(geom = "text", x = 35, y = 40, label = "Transición", color= "white", alpha = 0.5),
+                  annotate(geom = "text", x = 35, y = 60, label = "Gestación", color= "white", alpha = 0.5),
+                  annotate(geom = "text", x = 35, y = 82, label = "Definición", color= "white", alpha = 0.5),
                     geom_point(mapping = aes(x = x, y = 100 - y , color=Categoría)),
                         scale_color_brewer(name = "", palette = "Set2", direction = 1),
                           clean_graph)
@@ -142,10 +145,11 @@ df_lines$x <- ifelse(df_lines$x < 50, 0, 70)
 ggplot(data=df_lines)+
   geom_bar(mapping = aes(x = Categoría, fill= GanPer))+
     labs(title= "Lineouts", x = NULL, y = NULL) + 
-      scale_fill_brewer(name = "", palette = "Set1", direction = -1)
+      coord_fixed(ratio = 0.15)+
+        scale_y_continuous(breaks = 1:nrow(df_lines))+
+          scale_fill_brewer(name = "", palette = "Set1", direction = -1)
 
 ggplot(data=df_lines)+
-  annotation_custom(background, xmin = -6, xmax = 76, ymin = -20, ymax = 120)+
     cancha_y_coord+
       labs(title= "Lineouts", x = NULL, y = NULL) 
        
@@ -155,8 +159,10 @@ df_scrum <- filter(df, Categoría == "Scrum propio" | Categoría == "Scrum rival
 
 ggplot(data=df_scrum)+
   geom_bar(mapping = aes(x = Categoría, fill= GanPer))+
-    labs(title= "Scrums", x = NULL, y = NULL) +
-      scale_fill_brewer(name = "", palette = "Set1", direction = -1)
+    coord_fixed(ratio = 0.15)+
+      scale_y_continuous(breaks = 1:nrow(df_scrum))+
+        labs(title= "Scrums", x = NULL, y = NULL) +
+          scale_fill_brewer(name = "", palette = "Set1", direction = -1)
 
 ggplot(data=df_scrum)+
   cancha_y_coord+
