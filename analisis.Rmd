@@ -1,8 +1,6 @@
 ---
-title: "Análisis Partidos"
-output:
-  pdf_document: default
-  html_notebook: default
+title: "Análisis Partido Cuervos vs Seminario 16/03/2024"
+output: html_notebook
 ---
 
 ### Posesión
@@ -10,4 +8,3 @@ output:
 ```{r}
 
 ```
-
