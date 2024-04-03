@@ -194,3 +194,7 @@ graph_scrum <- ggplot(df_scrum_sum, aes(x = Categoría, y = n, fill = GanPer)) +
 graph_scrum_cancha <- ggplot(data=df_scrum)+
                         cancha_y_coord+
                           labs(title= NULL, x = NULL, y = NULL)
+
+save(graph_lines, graph_lines_cancha, graph_pen_cancha, graph_pen_zonas, graph_pos,
+     graph_scrum, graph_scrum_cancha, graph_tack_cancha, graph_tack_zonas,
+     graph_zonas,file="Data4Rmd.RData")
