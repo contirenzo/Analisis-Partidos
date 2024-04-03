@@ -1,5 +1,5 @@
 ---
-title: "Análisis Partido Cuervos vs Seminario 16/03/2024"
+title: "Análisis Partido Cuervos vs Seminario Intermedia 16/03/2024"
 output: html_document
 ---
 
