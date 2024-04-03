@@ -1,0 +1,75 @@
+---
+title: "Análisis Partido Cuervos vs Seminario 16/03/2024"
+output: html_document
+---
+
+### Posesión
+
+</br>
+```{r echo=FALSE}
+load(file="Data4Rmd.RData")
+graph_pos
+```
+
+### Porcentaje de tiempo de juego por zonas
+
+</br>
+```{r echo=FALSE}
+graph_zonas
+```
+
+### Penales concedidos al rival por zonas
+
+</br>
+```{r echo=FALSE}
+graph_pen_zonas
+```
+
+### Penales en cancha
+
+</br>
+```{r echo=FALSE}
+graph_pen_cancha
+```
+
+### Porcentaje de tackles propios por zona
+
+</br>
+```{r echo=FALSE}
+graph_tack_zonas
+```
+
+### Tackles en cancha
+
+</br>
+```{r echo=FALSE}
+graph_tack_cancha
+```
+
+### Lineouts
+
+</br>
+```{r echo=FALSE}
+graph_lines
+```
+
+### Lineouts en cancha
+
+</br>
+```{r echo=FALSE}
+graph_lines_cancha
+```
+
+### Scrums
+
+</br>
+```{r echo=FALSE}
+graph_scrum
+```
+
+### Scrums en cancha
+
+</br>
+```{r echo=FALSE}
+graph_scrum_cancha
+```
