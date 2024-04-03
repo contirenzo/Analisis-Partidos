@@ -83,14 +83,13 @@ df_pos_sum$Duracion_min <- df_pos_sum$suma_seg %/% 60
 df_pos_sum$Duracion_seg <- df_pos_sum$suma_seg %% 60
 df_pos_sum <- unite(df_pos_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
 #df_pos_sum$Duracion <- ifelse(nchar(df_pos_sum$Duracion) < 5, paste(substr(df_pos_sum$Duracion, 1, 3), "0", substr(df_pos_sum$Duracion, 4, nchar(df_pos_sum$Duracion)), sep = ""),df_pos_sum$Duracion)
-
-ggplot(df_pos_sum, aes(x="", y=suma_seg, fill=Categoría)) +
-  geom_bar(stat="identity") +
-    coord_polar("y", start=0) +
-      labs(title= NULL, x = NULL, y = NULL) +
-        clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = -1)+
-            geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
+graph_pos <- ggplot(df_pos_sum, aes(x="", y=suma_seg, fill=Categoría)) +
+              geom_bar(stat="identity") +
+                coord_polar("y", start=0) +
+                  labs(title= NULL, x = NULL, y = NULL) +
+                    clean_graph+
+                      scale_fill_brewer(name = "",palette = "Set1", direction = -1)+
+                        geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
 
 # annotate(geom = "text", x = 1, y = 650, label = "A")+
 # annotate(geom = "text", x = 1, y = 2050, label = "B")
@@ -105,13 +104,13 @@ df_zonas_sum$Duracion_seg <- df_zonas_sum$suma_seg %% 60
 df_zonas_sum <- unite(df_zonas_sum, Duracion, Duracion_min, Duracion_seg,sep=":")
 #df_zonas_sum$Duracion <- ifelse(nchar(df_zonas_sum$Duracion) < 5, paste(substr(df_zonas_sum$Duracion, 1, 3), "0", substr(df_zonas_sum$Duracion, 4, nchar(df_zonas_sum$Duracion)), sep = ""),df_zonas_sum$Duracion)
 
-ggplot(df_zonas_sum, aes(x="", y=suma_seg, fill=Categoría)) +
-  geom_bar(stat="identity") +
-    coord_polar("y", start=0) +
-      labs(title= NULL, x = NULL, y = NULL) + 
-        clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
-            geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
+graph_zonas <- ggplot(df_zonas_sum, aes(x="", y=suma_seg, fill=Categoría)) +
+                geom_bar(stat="identity") +
+                  coord_polar("y", start=0) +
+                    labs(title= NULL, x = NULL, y = NULL) + 
+                      clean_graph+
+                        scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
+                          geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
 
 
 #Penales
@@ -120,19 +119,17 @@ df_penales_conc_riv <- filter(df, Categoría == "Penalti concedido rival")
 df_penales_conc_riv_sum <- df_penales_conc_riv %>% group_by(Zona) %>% summarise(suma=n())
 df_penales_conc_riv_sum$percent <- df_penales_conc_riv_sum$suma/sum(df_penales_conc_riv_sum$suma)*100
 
-ggplot(df_penales_conc_riv_sum, aes(x="", y=suma, fill=Zona)) +
-  geom_bar(stat="identity") +
-    coord_polar("y", start=0) +
-      labs(title= NULL, x = NULL, y = NULL) + 
-        clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
-            geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
+graph_pen_zonas <- ggplot(df_penales_conc_riv_sum, aes(x="", y=suma, fill=Zona)) +
+                    geom_bar(stat="identity") +
+                      coord_polar("y", start=0) +
+                        labs(title= NULL, x = NULL, y = NULL) + 
+                          clean_graph+
+                            scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
+                              geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
 
-  
-
-ggplot(data=df_penales)+
-  cancha_y_coord+
-    labs(title= NULL, x = NULL, y = NULL)
+graph_pen_cancha <- ggplot(data=df_penales)+
+                    cancha_y_coord+
+                      labs(title= NULL, x = NULL, y = NULL)
 
 #Tackles
 df_tackles <- filter(df, Categoría == "Tackle")
@@ -140,17 +137,17 @@ df_tackles_sum <- df_tackles %>% group_by(Zona) %>% summarise(suma=n())
 df_tackles_sum$percent <- df_tackles_sum$suma/sum(df_tackles_sum$suma)*100
 
 
-ggplot(df_tackles_sum, aes(x="", y=suma, fill=Zona)) +
-  geom_bar(stat="identity") +
-    coord_polar("y", start=0) +
-      labs(title= NULL, x = NULL, y = NULL) +
-        clean_graph+
-          scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
-            geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
+graph_tack_zonas <- ggplot(df_tackles_sum, aes(x="", y=suma, fill=Zona)) +
+                    geom_bar(stat="identity") +
+                      coord_polar("y", start=0) +
+                        labs(title= NULL, x = NULL, y = NULL) +
+                          clean_graph+
+                            scale_fill_brewer(name = "",palette = "Set1", direction = 1)+
+                              geom_text(aes(label = paste0(round(percent, digits = 1), "%")), position = position_stack(vjust = 0.5), color = "white")
 
-ggplot(data=df_tackles)+
-  cancha_y_coord+
-  labs(title= NULL, x = NULL, y = NULL)
+graph_tack_cancha <- ggplot(data=df_tackles)+
+                      cancha_y_coord+
+                        labs(title= NULL, x = NULL, y = NULL)
 
 #Lineouts
 df_lines <- filter(df, Categoría == "Lineout propio" | Categoría == "Lineout rival")
@@ -161,19 +158,19 @@ df_lines_sum <- df_lines %>%
   mutate(total = sum(n)) %>%
   ungroup()
 
-ggplot(df_lines_sum, aes(x = Categoría, y = n, fill = GanPer)) +
-  geom_bar(stat = "identity") +  # Crear el gráfico de barras apiladas
-  scale_y_continuous(breaks = 1:nrow(df_lines))+
-  labs(title= NULL, x = NULL, y = NULL)+
-  scale_fill_brewer(name = "", palette = "Set1", direction = -1)+
-  geom_text(aes(label = n, group = GanPer),  # Agregar etiquetas con los valores de las sumas
-            position = position_stack(vjust = 0.5),  # Alinear las etiquetas en el centro de cada segmento apilado
-            color = "white",      # Establecer el color del texto
-            size = 3)             # Establecer el tamaño del texto
+graph_lines <- ggplot(df_lines_sum, aes(x = Categoría, y = n, fill = GanPer)) +
+                geom_bar(stat = "identity") +  # Crear el gráfico de barras apiladas
+                  scale_y_continuous(breaks = 1:nrow(df_lines))+
+                    labs(title= NULL, x = NULL, y = NULL)+
+                      scale_fill_brewer(name = "", palette = "Set1", direction = -1)+
+                        geom_text(aes(label = n, group = GanPer),  # Agregar etiquetas con los valores de las sumas
+                                  position = position_stack(vjust = 0.5),  # Alinear las etiquetas en el centro de cada segmento apilado
+                                  color = "white",      # Establecer el color del texto
+                                  size = 3)             # Establecer el tamaño del texto
 
-ggplot(data=df_lines)+
-    cancha_y_coord+
-      labs(title= NULL, x = NULL, y = NULL) 
+graph_lines_cancha <- ggplot(data=df_lines)+
+                        cancha_y_coord+
+                          labs(title= NULL, x = NULL, y = NULL) 
        
 
 #Scrums
@@ -184,16 +181,16 @@ df_scrum_sum <- df_scrum %>%
                       mutate(total = sum(n)) %>%
                         ungroup()
 
-ggplot(df_scrum_sum, aes(x = Categoría, y = n, fill = GanPer)) +
-  geom_bar(stat = "identity") +  # Crear el gráfico de barras apiladas
-    scale_y_continuous(breaks = 1:nrow(df_scrum))+
-      labs(title= NULL, x = NULL, y = NULL)+
-        scale_fill_brewer(name = "", palette = "Set1", direction = -1)+
-          geom_text(aes(label = n, group = GanPer),  # Agregar etiquetas con los valores de las sumas
-                    position = position_stack(vjust = 0.5),  # Alinear las etiquetas en el centro de cada segmento apilado
-                    color = "white",      # Establecer el color del texto
-                    size = 3)             # Establecer el tamaño del texto
+graph_scrum <- ggplot(df_scrum_sum, aes(x = Categoría, y = n, fill = GanPer)) +
+                geom_bar(stat = "identity") +  # Crear el gráfico de barras apiladas
+                  scale_y_continuous(breaks = 1:nrow(df_scrum))+
+                    labs(title= NULL, x = NULL, y = NULL)+
+                      scale_fill_brewer(name = "", palette = "Set1", direction = -1)+
+                        geom_text(aes(label = n, group = GanPer),  # Agregar etiquetas con los valores de las sumas
+                                  position = position_stack(vjust = 0.5),  # Alinear las etiquetas en el centro de cada segmento apilado
+                                  color = "white",      # Establecer el color del texto
+                                  size = 3)             # Establecer el tamaño del texto
 
-ggplot(data=df_scrum)+
-  cancha_y_coord+
-    labs(title= NULL, x = NULL, y = NULL)
+graph_scrum_cancha <- ggplot(data=df_scrum)+
+                        cancha_y_coord+
+                          labs(title= NULL, x = NULL, y = NULL)
