@@ -39,7 +39,7 @@ graph_pen_cancha
 graph_tack_zonas
 ```
 
-### Tackles en cancha
+### Tackles propios en cancha
 
 </br>
 ```{r echo=FALSE}
