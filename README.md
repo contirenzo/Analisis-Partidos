@@ -1,6 +1,6 @@
 # Análisis de Partidos de Rugby
 
-![](images/semi.jpg)
+![](images/img.jpg)
 
 Me complace presentarte mi repositorio personal dedicado al análisis exhaustivo de los partidos de rugby que juego como miembro del Club Seminario. Aquí, comparto meticulosamente los resultados de mis análisis, basados en la recopilación de datos de los encuentros utilizando la herramienta Nacsports y su posterior procesamiento mediante el lenguaje de programación R.
 
