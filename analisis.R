@@ -197,4 +197,4 @@ graph_scrum_cancha <- ggplot(data=df_scrum)+
 
 save(graph_lines, graph_lines_cancha, graph_pen_cancha, graph_pen_zonas, graph_pos,
      graph_scrum, graph_scrum_cancha, graph_tack_cancha, graph_tack_zonas,
-     graph_zonas,file="Data4Rmd.RData")
+     graph_zonas, clean_graph, background, cancha_y_coord,file="Data4Rmd.RData")
